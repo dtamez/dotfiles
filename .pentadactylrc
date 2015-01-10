@@ -1,0 +1,12 @@
+"hg6898
+
+loadplugins '\.(js|penta)$'
+group user
+
+" vim: set ft=pentadactyl:
+javascript <<EOF
+editor.defaultRegister="+"
+EOF
+
+command! -description 'Open the most-recently-visited link in a new tab' reopen-last-visited -javascript history.list('', true, 1, '-date')
+nmap ,u :reopen-last-visited<CR><CR>

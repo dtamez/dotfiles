@@ -1,0 +1,13 @@
+--color
+--pager=less -r
+--ignore-dir=.backup
+--ignore-dir=parts
+--ignore-dir=branches
+--ignore-dir=eggs
+--ignore-dir=develop-eggs
+--ignore-dir=migrations
+--ignore-dir=deb_dist
+--ignore-dir=virtualenv
+--ignore-dir=.env
+--type-set=tags=tags
+--type=notags
