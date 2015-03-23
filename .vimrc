@@ -4,50 +4,72 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 set rtp+=/usr/local/lib/python2.7/dist-packages/powerline/bindings/vim
 call vundle#rc()
-Bundle 'gmarik/vundle'
-Bundle 'Valloric/YouCompleteMe'
-" requires node.js npm and then npm install from bundle/term_for_vim"
-Bundle 'marijnh/tern_for_vim'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'pluginbackup.vim'
-Bundle 'Raimondi/delimitMate'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'tpope/vim-repeat'
-Bundle 'tpope/vim-fugitive'
-Bundle 'edsono/vim-matchit'
-Bundle 'scrooloose/syntastic'
-Bundle 'godlygeek/csapprox'
-Bundle 'klen/rope-vim'
-Bundle 'Gundo'
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
-" Bundle 'Rykka/clickable.vim'
-" Bundle 'Rykka/riv.vim'
-Bundle 'aaronbieber/quicktask'
-Bundle 'hynek/vim-python-pep8-indent'
-Bundle 'nvie/vim_bridge'
-Bundle 'nvie/vim-rst-tables'
-Bundle 'rbgrouleff/bclose.vim'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-session'
-Bundle 'rking/ag.vim'
-" Bundle 'tmhedberg/SimpylFold'
-Bundle 'aperezdc/vim-template'
-" Bundle 'lepture/vim-jinja'
-Bundle 'mattn/emmet-vim'
-Bundle 'kien/ctrlp.vim'
-Bundle 'jasoncodes/ctrlp-modified.vim'
-Bundle 'sgur/ctrlp-extensions.vim'
-Bundle 'https://github.com/gorodinskiy/vim-coloresque.git'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'vim-scripts/ScrollColors'
-" Bundle 'ervandew/supertab'
-Bundle 'lambdalisue/vim-django-support'
-Bundle 'pangloss/vim-javascript'
-Bundle 'maksimr/vim-jsbeautify'
-Bundle 'yegappan/greplace'
+Plugin 'gmarik/vundle'
+" autocomplete
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'marijnh/tern_for_vim'
+" syntax
+Plugin 'scrooloose/syntastic'
+Plugin 'hdima/python-syntax'
+Plugin 'othree/javascript-libraries-syntax.vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'vim-scripts/JavaScript-Indent'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'groenewege/vim-less'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+" source control
+Plugin 'tpope/vim-fugitive'
+" file navigation
+Plugin 'kien/ctrlp.vim'
+Plugin 'jasoncodes/ctrlp-modified.vim'
+Plugin 'sgur/ctrlp-extensions.vim'
+" general editing
+Plugin 'pluginbackup.vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-repeat'
+Plugin 'edsono/vim-matchit'
+Plugin 'Gundo'
+Plugin 'rbgrouleff/bclose.vim'
+Plugin 'xolox/vim-session'
+Plugin 'rking/ag.vim'
+Plugin 'yegappan/greplace'
+Plugin 'aperezdc/vim-template'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'scrooloose/nerdcommenter'
+" Plugin 'svermeulen/vim-easyclip'
+
+" snippet
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+Plugin 'matthewsimo/angular-vim-snippets'
+" python
+Plugin 'klen/rope-vim'
+Plugin 'hynek/vim-python-pep8-indent'
+Plugin 'lambdalisue/vim-django-support'
+" html
+Plugin 'mattn/emmet-vim'
+Plugin 'othree/html5.vim'
+" javascript
+Plugin 'maksimr/vim-jsbeautify'
+Plugin 'claco/jasmine.vim'
+" Plugin 'lepture/vim-jinja'
+" colors
+Plugin 'godlygeek/csapprox'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'vim-scripts/ScrollColors'
+Plugin 'https://github.com/gorodinskiy/vim-coloresque.git'
+Plugin 'vim-scripts/colorsupport.vim'
+" Restructured Text
+" Plugin 'Rykka/clickable.vim'
+" Plugin 'Rykka/riv.vim'
+" Plugin 'nvie/vim_bridge'
+" Plugin 'nvie/vim-rst-tables'
+" tasks
+Plugin 'aaronbieber/quicktask'
 " }}}
 " General Options {{{
 filetype on
@@ -87,6 +109,11 @@ let python_highlight_all=1
 let python_version_2=1
 let g:bzr_highlight_diff = 1  " allows diff in bzr ci files to be colored correctly
 set tags=./tags; " semicolon means traverse upwards from the current directory until tags is found
+let g:easytags_dynamic_files = 2
+let g:easytags_suppress_report = 1
+let g:easytags_events = ['BufWritePost']
+let g:easytags_autorecurse = 1
+:autocmd FileType python let b:easytags_auto_highlight = 1
 " }}}
 " Key Mappings {{{
 
@@ -148,6 +175,7 @@ nnoremap <Leader>f :CtrlP<CR>
 " Pull word under cursor into LHS of a substitute (for quick search and" replace)
 " nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 " <leader> t is mapped to QuickTask
+nnoremap <Leader>t :CtrlPTag<CR>
 nnoremap <leader>u :GundoToggle<CR>
 " <leader> v is the prefix for VCSCommands
 nnoremap <leader>w <C-w>v<C-w>l
@@ -178,9 +206,11 @@ nmap <leader>P "+P
 "}}}
 " Colors and GUI {{{
 set t_Co=256
-:autocmd ColorScheme * highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+let g:rehash256 = 1
+let colorsupport_cube_name='konsole'
+:autocmd ColorScheme * highlight ExtraWhitespace ctermbg=darkgreen
 set background=dark
-colorscheme candy "tamez inkpot desert256 candy oceanblack256 synic northland neverness lettuce inkpot elflord fruity vividchalk vibrantink wombat256 torte tir_black tolerable tango rootwater rdark oceanblack256 no_quarter night neverness molokai delek colorer 256asuldark xoria256
+colorscheme ir_black "inkpot desert256 candy oceanblack256 synic northland neverness lettuce inkpot elflord fruity vividchalk vibrantink wombat256 torte tir_black tolerable tango rootwater rdark oceanblack256 no_quarter night neverness molokai delek colorer 256asuldark xoria256
 set guioptions-=T
 set ruler
 set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids"
@@ -275,12 +305,13 @@ autocmd FileType javascript set ts=4
 autocmd FileType javascript set sts=4
 autocmd FileType javascript set textwidth=79
 
-" au FileType python set foldmethod=indent
-" au FileType python set foldlevel=99
+au FileType html set foldmethod=indent
+au FileType python set foldmethod=indent
+au FileType python set foldlevel=99
 
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType javascript setlocal omnifunc=tern#Complete
 " autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd filetype css setlocal equalprg=csstidy\ -\ --silent=true\ --sort_properties=true
@@ -364,7 +395,7 @@ EOF
 " }}}
 " JavaScript section {{{
 au! BufRead,BufNewFile *.html set filetype=htmldjango.javascript_tern
-au FileType javascript call JavaScriptFold()
+" au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl nocindent
 au FileType javascript setl autoindent
@@ -375,16 +406,8 @@ au FileType javascript imap <c-a> alert();<esc>hi
 au FileType javascript inoremap <buffer> $r return
 au FileType javascript inoremap <buffer> $f //--- PH ----------------------------------------------<esc>FP2xi
 
-function! JavaScriptFold()
-    setl foldmethod=syntax
-    setl foldlevelstart=1
-    syn region foldBraces start=/{/ end=/}/ transparent fold keepend extend
-
-    function! FoldText()
-    return substitute(getline(v:foldstart), '{.*', '{...}', '')
-    endfunction
-    setl foldtext=FoldText()
-endfunction"}}}
+let g:used_javascript_libs = 'underscore,angularjs'
+"}}}
 " Json section {{{
 au! BufRead,BufNewFile *.json set filetype=json
 
@@ -415,9 +438,10 @@ let g:ycm_key_list_select_completion=[]
 let g:ycm_key_list_previous_completion=[]
 " }}}
 " CtrlP {{{
+let g:ctrlp_open_new_file = 'r'
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'file': '\v\.(exe|so|dll|o)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 map <Leader>m :CtrlPModified<CR>
@@ -478,9 +502,14 @@ let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_removetag_key = '<c-r>'
 let g:user_emmet_splitjointag_key = '<c-t>'
 " }}}
+" Python syntax {{{
+let python_highlight_all = 1
+" }}}
 " VIM-Templates {{{
 let g:username='Danny Tamez'
 let g:email='zematynnad@gmail.com'
 " }}}
-"
+map <F12> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 "  vim: fdm=marker
