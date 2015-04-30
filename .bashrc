@@ -61,13 +61,25 @@ alias cp='cp -r'
 alias delpyc='find ./ -type f -name "*.pyc" -exec rm -f {} \;'
 alias vi='vim'
 
-alias cercular='ssh -l dtamez localhost -p 9922'
-
 alias smtp='python -m smtpd -n -c DebuggingServer localhost:1025'
 alias tunnel_dorian='ssh -L 8001:172.16.17.252:8001 ubuntu@localhost -p 7922'
 alias tunnel_cerc='ssh -L 8000:127.0.0.1:8000 dtamez@localhost -p 9922'
+alias cercular='ssh -l dtamez localhost -p 9922'
+
+alias ap1='ssh apu-app-001'
+alias web1='ssh apu-web-001'
+alias db1='ssh apu-db-001'
+alias wk1='ssh apu-wrk-001'
+alias wk2='ssh apu-wrk-002'
+
+alias r_ap1='ssh root@ap-app-01'
+alias r_web1='ssh root@ap-web-01'
+alias r_db1='ssh root@ap-db-01'
+alias r_wk1='ssh root@ap-wrk-01'
+alias r_wk2='ssh root@ap-wrk-02'
 
 alias tm='~/tm'
+alias tm-ui='~/tm-ui'
 unset HISTFILESIZE
 HISTSIZE=100000
 PROMPT_COMMAND="history -a"
@@ -84,3 +96,6 @@ export PROJECT_HOME=$HOME/projects
 source /usr/local/bin/virtualenvwrapper.sh
 source /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 set -o vi
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"

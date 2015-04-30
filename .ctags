@@ -1,3 +1,5 @@
---python-kinds=-iv
---exclude=*/build/*
---exclude=*/.backup/*
+--python-kinds=-ivm
+--exclude=build
+--exclude=dist
+--exclude=.backup
+--exclude=bower_components

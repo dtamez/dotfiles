@@ -24,6 +24,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
 Plugin 'jasoncodes/ctrlp-modified.vim'
 Plugin 'sgur/ctrlp-extensions.vim'
+" Plugin 'FelikZ/ctrlp-py-matcher'
 " general editing
 Plugin 'pluginbackup.vim'
 Plugin 'Raimondi/delimitMate'
@@ -61,13 +62,13 @@ Plugin 'claco/jasmine.vim'
 Plugin 'godlygeek/csapprox'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'vim-scripts/ScrollColors'
-Plugin 'https://github.com/gorodinskiy/vim-coloresque.git'
 Plugin 'vim-scripts/colorsupport.vim'
+Plugin 'https://github.com/gorodinskiy/vim-coloresque.git'
 " Restructured Text
 " Plugin 'Rykka/clickable.vim'
 " Plugin 'Rykka/riv.vim'
-" Plugin 'nvie/vim_bridge'
-" Plugin 'nvie/vim-rst-tables'
+Plugin 'nvie/vim_bridge'
+Plugin 'nvie/vim-rst-tables'
 " tasks
 Plugin 'aaronbieber/quicktask'
 " }}}
@@ -112,7 +113,7 @@ set tags=./tags; " semicolon means traverse upwards from the current directory u
 let g:easytags_dynamic_files = 2
 let g:easytags_suppress_report = 1
 let g:easytags_events = ['BufWritePost']
-let g:easytags_autorecurse = 1
+let g:easytags_autorecurse = 0
 :autocmd FileType python let b:easytags_auto_highlight = 1
 " }}}
 " Key Mappings {{{
@@ -170,8 +171,6 @@ nnoremap <Leader>b :CtrlPBuffer<CR>
 nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
 " <leader> f is mapped to FuzzyFinder file search
 nnoremap <Leader>f :CtrlP<CR>
-" nnoremap <Leader>f :Unite file_rec<CR>
-" nnoremap <Leader>F :Unite file/new<CR>
 " Pull word under cursor into LHS of a substitute (for quick search and" replace)
 " nnoremap <Leader>s :%s/\<<C-r><C-w>\>/
 " <leader> t is mapped to QuickTask
@@ -182,10 +181,6 @@ nnoremap <leader>w <C-w>v<C-w>l
 " add a ; at the end of the line w/o leaving insert mode
 inoremap <leader>; <C-o>A;
 
-map <F12> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
 nmap <Leader>h :call <SID>SynStack()<CR>
 
 function! <SID>SynStack()
@@ -195,10 +190,11 @@ function! <SID>SynStack()
     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
 
-" Yank to and paste from the OS clipboard with ,y and ,p
-set clipboard=unnamed
 nmap <leader>c :CloseSession<CR>
 nmap <leader>o :OpenSession<space>
+
+" Yank to and paste from the OS clipboard with ,y and ,p
+set clipboard=unnamed
 nmap <leader>y "+y
 nmap <leader>Y "+yy
 nmap <leader>p "+p
@@ -299,10 +295,10 @@ autocmd FileType css set sw=2
 autocmd FileType css set ts=2
 autocmd FileType css set sts=2
 autocmd FileType css set textwidth=79
-" JavaScript (tab width 4 chr, wrap at 79th)
-autocmd FileType javascript set sw=4
-autocmd FileType javascript set ts=4
-autocmd FileType javascript set sts=4
+" JavaScript (tab width 2 chr, wrap at 79th)
+autocmd FileType javascript set sw=2
+autocmd FileType javascript set ts=2
+autocmd FileType javascript set sts=2
 autocmd FileType javascript set textwidth=79
 
 au FileType html set foldmethod=indent
@@ -311,7 +307,7 @@ au FileType python set foldlevel=99
 
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-" autocmd FileType javascript setlocal omnifunc=tern#Complete
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 " autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd filetype css setlocal equalprg=csstidy\ -\ --silent=true\ --sort_properties=true
@@ -416,14 +412,14 @@ augroup json_autocmd
   autocmd FileType json set autoindent
   autocmd FileType json set formatoptions=tcq2l
   autocmd FileType json set textwidth=78 shiftwidth=2
-  autocmd FileType json set softtabstop=2 tabstop=8
+  autocmd FileType json set softtabstop=2 tabstop=2
   autocmd FileType json set expandtab
   autocmd FileType json set foldmethod=syntax
 augroup END
 " }}}
 " Buffers and Files {{{
 set wildmenu
-set wildignore=*.bzr,*.pyc,*.swp,*.bak
+set wildignore=*.bzr,*.pyc,*.swp,*.bak,*/.backup/*
 set wildmode=list:longest,full
 "}}}
 " Statusline {{{
@@ -439,11 +435,20 @@ let g:ycm_key_list_previous_completion=[]
 " }}}
 " CtrlP {{{
 let g:ctrlp_open_new_file = 'r'
+" \ 'dir':  '\v[\/]\.(git|hg|svn),bower_components$',
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-  \ 'file': '\v\.(exe|so|dll|o)$',
+  \ 'dir': 'dist\|components\|node_modules\|.DS_Store$\|.git$\|.svn$\|bower_components$',
+  \ 'file': '\v\.(exe|so|dll|pyc)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
+let g:ctrlp_lazy_update = 350
+" let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_max_files = 0
+if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --ignore ''.git'' --ignore ''.DS_Store'' --ignore ''node_modules'' --hidden -g ""'
+endif
 map <Leader>m :CtrlPModified<CR>
 map <Leader>M :CtrlPBranch<CR>
 " }}}
@@ -501,6 +506,9 @@ noremap <silent> ,gl :Glog<CR>
 let g:user_emmet_leader_key = '<c-y>'
 let g:user_emmet_removetag_key = '<c-r>'
 let g:user_emmet_splitjointag_key = '<c-t>'
+" }}}
+" Ag {{{
+let g:ag_prg="ag --column"
 " }}}
 " Python syntax {{{
 let python_highlight_all = 1
